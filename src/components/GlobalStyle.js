@@ -9,6 +9,9 @@ export const GlobalStyle = createGlobalStyle`
       text-decoration: none;
       color: black;
     }
+    li{
+      list-style: none;
+    }
     &::-webkit-scrollbar{
     width: 0.5rem;
   }
@@ -37,12 +40,14 @@ body{
 
 h2{
   font-family: 'Anton', sans-serif;
-  font-size: 3rem;
+  font-size: 5rem;
 }
 
 h3{
   font-size: 1.5rem;
   font-weight: regular;
+  line-height: 1.5;
+
 }
 
 p{

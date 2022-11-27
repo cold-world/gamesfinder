@@ -6,6 +6,7 @@ const initialState = {
   gameDetails: {},
   screenshots: [],
   status: null,
+  screenStatus: null,
   error: null,
 };
 
@@ -64,7 +65,12 @@ const detailSlice = createSlice({
       state.gameDetails = action.payload;
     },
     [fetchGameScreenshots.fulfilled]: (state, action) => {
-      state.status = 'fulfilled';
+      state.screenStatus = 'fulfilled';
+      state.error = null;
+      state.screenshots = action.payload;
+    },
+    [fetchGameScreenshots.pending]: (state, action) => {
+      state.screenStatus = 'pending';
       state.error = null;
       state.screenshots = action.payload;
     },
