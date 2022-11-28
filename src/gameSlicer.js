@@ -3,21 +3,46 @@ import { newsTranding } from './api';
 import axios from 'axios';
 
 const initialState = {
-  popular: [],
+  currentFetchedGames: [],
+  currentFetchUrl: null,
   status: null,
   error: null,
 };
 
 export const fetchGames = createAsyncThunk(
   'games/fetchGames',
-  async (page = 1, { rejectWithValue }) => {
-    const response = await axios.get(newsTranding(page));
+  async (url, { rejectWithValue, dispatch }) => {
+    const response = await axios.get(url);
+
     try {
       if (response.status !== 200) {
         throw new Error(
           'Something went wrong with server... Try again later please.'
         );
       } else {
+        dispatch(getUrl(url));
+
+        console.log(response.data.results);
+        return response.data.results;
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+export const reloadGames = createAsyncThunk(
+  'games/reloadGames',
+  async (url, { rejectWithValue, dispatch }) => {
+    const response = await axios.get(url);
+
+    try {
+      if (response.status !== 200) {
+        throw new Error(
+          'Something went wrong with server... Try again later please.'
+        );
+      } else {
+        dispatch(getUrl(url));
+
         console.log(response.data.results);
         return response.data.results;
       }
@@ -30,23 +55,32 @@ export const fetchGames = createAsyncThunk(
 const fetchSlice = createSlice({
   name: 'games',
   initialState,
-  reducers: {},
+  reducers: {
+    getUrl: (state, action) => {
+      state.currentFetchUrl = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchGames.fulfilled, (state, action) => {
       state.status = 'fulfilled';
       state.error = null;
-      state.popular.push(...action.payload)
+      state.currentFetchedGames.push(...action.payload);
+    });
+    builder.addCase(reloadGames.fulfilled, (state, action) => {
+      state.status = 'fulfilled';
+      state.error = null;
+      state.currentFetchedGames = action.payload;
     });
     builder.addCase(fetchGames.rejected, (state, action) => {
       state.status = 'rejected';
       state.error = action.payload;
     });
-    builder.addCase(fetchGames.pending, (state, action) => {
+    builder.addCase(fetchGames.pending, (state) => {
       state.status = 'pending';
       state.error = null;
     });
   },
 });
 
-export const { fetch } = fetchSlice.actions;
+export const { fetch, getUrl, reload } = fetchSlice.actions;
 export default fetchSlice.reducer;

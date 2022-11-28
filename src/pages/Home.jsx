@@ -10,44 +10,53 @@ import GameDetails from '../components/GameDetails';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useLocation } from 'react-router-dom';
 import Banner from '../components/Banner';
+import { newsTranding, newLast30Days, bestOfTheYear } from '../api';
+import Nav from '../components/Nav';
+import TitlePage from '../components/TitlePage';
 
 const Home = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchGames());
+    dispatch(fetchGames(newsTranding(1)));
   }, []);
 
   const location = useLocation();
   const pathId = location.pathname.split('/')[2];
-  const { popular, status, error } = useSelector((state) => state.game);
+  const { currentFetchedGames, status, error, currentFetchUrl } = useSelector(
+    (state) => state.game
+  );
   const [pageNumber, setPageNumber] = useState(2);
-  const pageNumberCounter = () => {
-    dispatch(fetchGames(pageNumber));
+  const pageNumberCounter = async () => {
+    await currentFetchUrl;
     setPageNumber(pageNumber + 1);
+    const pageSetup = () => currentFetchUrl.slice(0, -1) + pageNumber;
+    dispatch(fetchGames(pageSetup()));
   };
-
   return (
     <>
+      <Nav setPageNumber={setPageNumber} />
       <GamesContainer>
         {status === 'pending' && <Spinner />}
         {error && <h2>{error}</h2>}
-        <form action='submit'>
-          <input type='text' />
-        </form>
-        <TextAndBanner>
-          <h2>New and trending</h2>
-          <Banner />
-        </TextAndBanner>
+        <TextInputBanner>
+          <TextAndInput>
+            <form action='submit'>
+              <input type='text' />
+            </form>
+            <TitlePage location={location} />
+          </TextAndInput>
+            <Banner />
+        </TextInputBanner>
         {pathId && <GameDetails />}
         <InfiniteScroll
-          dataLength={popular.length}
+          dataLength={currentFetchedGames.length}
           next={pageNumberCounter}
           hasMore={true}
           pullDownToRefreshThreshold={50}
         >
           <Games>
-            {popular &&
-              popular.map((game) => (
+            {currentFetchedGames &&
+              currentFetchedGames.map((game) => (
                 <Game
                   key={game.id}
                   id={game.id}
@@ -73,18 +82,22 @@ const GamesContainer = styled(motion.div)`
   }
   input {
     margin-left: 2rem;
-    width: 50%;
+    width: 95%;
     border-radius: 20px;
     height: 40px;
     padding: 1rem;
     font-size: 1.5rem;
     font-family: 'Roboto', sans-serif;
+    box-shadow: 5px 0px 10px rgba(0, 0, 0, 0.2);
   }
 `;
-const TextAndBanner = styled.div`
-  display: flex;
-  justify-content: space-between;
+const TextInputBanner = styled.div`
+display: flex;
+justify-content: space-between;
 `;
+
+const TextAndInput = styled.div`
+`
 const Games = styled(motion.div)`
   min-height: 80vh;
   display: grid;

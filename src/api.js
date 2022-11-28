@@ -19,15 +19,18 @@ const currentYear = new Date().getFullYear();
 const currentDay = getCurrentDay();
 
 const currentDate = `${currentYear}-${currentMonth}-${currentDay}`;
-const currentDateMonthAgo = `${currentYear}-${currentMonth -1}-${currentDay}`;
+const currentDateMonthAgo = `${currentYear}-${currentMonth - 1}-${currentDay}`;
 const lastYear = `${currentYear - 1}-${currentMonth}-${currentDay}`;
 const nextYear = `${currentYear + 1}-${currentMonth}-${currentDay}`;
 
 export const newsTranding = (page) =>
   `${baseUrl}?${apiKey}&dates=${currentDateMonthAgo},${nextYear}&order=rating&page_size=20&page=${page}`;
 
+export const newLast30Days = (page) =>
+  `${baseUrl}?${apiKey}&dates=${currentDateMonthAgo},${currentDate}&order=rating&page_size=20&page=${page}`;
+
+export const bestOfTheYear = (page) =>
+  `${baseUrl}?${apiKey}&dates=${lastYear},${currentDate}&order=rating&page_size=20&page=${page}`;
 
 export const gameDetails = (id) => `${baseUrl}/${id}?${apiKey}`;
 export const gameScreenshots = (id) => `${baseUrl}/${id}/screenshots?${apiKey}`;
-export const gameMovies = (id) => `${baseUrl}/${id}/movies?${apiKey}`;
-

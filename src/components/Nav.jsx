@@ -1,91 +1,117 @@
 import React from 'react';
 import styled from 'styled-components';
+import { fetchGames, reloadGames } from '../gameSlicer';
+import { newLast30Days, bestOfTheYear } from '../api';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, Link } from 'react-router-dom';
 
-const Nav = () => {
+const Nav = ({ setPageNumber }) => {
+  const { currentFetchUrl } = useSelector((state) => state.game);
+  const pageSetup = (num) => {
+    currentFetchUrl.slice(0, -1) + num;
+  };
+  const dispatch = useDispatch();
+  const fetchGamesHandler = () => {
+    setPageNumber(2);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    switch (key) {
+      case value:
+        
+        break;
+    
+      default:
+        break;
+    }
+    dispatch(reloadGames(bestOfTheYear(1)));
+  };
+
   return (
     <StyledNav>
       <div className='logo'>
-        <a href='/'>
-          <h2>GamesFinder</h2>
-        </a>
+        <Link to='/'>
+          <h2 onClick={fetchGamesHandler}>GamesFinder</h2>
+        </Link>
       </div>
       <Menu>
         <ul>
-          <a href='/'>
-            <li>
+          <Link to='/'>
+            <li onClick={fetchGamesHandler}>
               <h3>Home</h3>
             </li>
-          </a>
-          <a href='/'>
-            <li>
-              <h3>New Releases</h3>
-            </li>
-          </a>
-          <a href='/'>
-            <li>
+          </Link>
+          <li>
+            <h3>New Releases</h3>
+          </li>
+          <Link href='/discover/last-30-days'>
+            <li onClick={fetchGamesHandler}>
               <p>Last 30 days</p>
             </li>
-          </a>
-          <a href='/'>
+          </Link>
+          <Link to='/'>
             <li>
               <p>This week</p>
             </li>
-          </a>
-          <a href='/'>
+          </Link>
+          <Link to='/'>
             <li>
               <p>Next week</p>
             </li>
-          </a>
-          <a href='/'>
+          </Link>
+          <Link to='/'>
             <li>
               <h3>Top</h3>
             </li>
-          </a>
-          <a href='/'>
-            <li>
+          </Link>
+          <Link to='/discover/best-of-the-year'>
+            <li onClick={fetchGamesHandler}>
               <p>Best of the year</p>
             </li>
-          </a>
-          <a href='/'>
+          </Link>
+          <Link to='/'>
             <li>
               <p>Popular in</p>
             </li>
-          </a>
-          <a href='/'>
+          </Link>
+          <Link to='/'>
             <li>
               <p>All time top 250</p>
             </li>
-          </a>
-          <a href='/'>
+          </Link>
+          <Link to='/'>
             <li>
               <h3>All games</h3>
             </li>
-          </a>
-          <a href='/'>
+          </Link>
+          <Link to='/'>
             <li>
               <h3>Platforms</h3>
             </li>
-          </a>
-          <a href='/'>
+          </Link>
+          <Link to='/'>
             <li>
               <p>PC</p>
             </li>
-          </a>
-          <a href='/'>
+          </Link>
+          <Link to='/'>
             <li>
               <p>PlayStation 4</p>
             </li>
-          </a>
-          <a href='/'>
+          </Link>
+          <Link to='/'>
+            <li>
+              <p>PlayStation 5</p>
+            </li>
+          </Link>
+          <Link to='/'>
             <li>
               <p>Xbox One</p>
             </li>
-          </a>
-          <a href='/'>
+          </Link>
+          <Link to='/'>
             <li>
               <p>Nintendo Switch</p>
             </li>
-          </a>
+          </Link>
         </ul>
       </Menu>
     </StyledNav>
@@ -111,7 +137,7 @@ const StyledNav = styled.nav`
 `;
 
 const Menu = styled.div`
-  margin-top: 5rem;
+  margin-top: 3rem;
 `;
 
 export default Nav;

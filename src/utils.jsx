@@ -10,6 +10,7 @@ import ps5 from './img/ps5.svg';
 import star from './img/star-full.png';
 import starempty from './img/star-empty.png';
 import mac from './img/mac.svg';
+import parse from 'html-react-parser';
 
 export const resizeImg = (imagePath, newSize) => {
   try {
@@ -26,8 +27,7 @@ export const resizeImg = (imagePath, newSize) => {
 };
 
 export const deletePtags = (text) => {
-  const newNext = text.replace(/<\/?p[^>]*>/g, '');
-  return newNext;
+  return parse(text)
 };
 
 export const getIconPlatforms = (platform) => {

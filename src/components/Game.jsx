@@ -33,7 +33,11 @@ const Game = ({ name, image, platforms, rating, id }) => {
           <Platforms>
             {platforms &&
               platforms.map((item) => (
-                <img src={getIconPlatforms(item.platform.name)}></img>
+                <img
+                  key={item.platform.name}
+                  alt={item.platform.name}
+                  src={getIconPlatforms(item.platform.name)}
+                ></img>
               ))}
           </Platforms>
           <Rating>

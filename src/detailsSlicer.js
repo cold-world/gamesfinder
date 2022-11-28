@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { gameScreenshots, gameDetails, gameMovies } from './api';
+import { gameScreenshots, gameDetails } from './api';
 import axios from 'axios';
 
 const initialState = {
