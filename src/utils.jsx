@@ -1,6 +1,4 @@
 import apple from './img/apple.svg';
-import gamepad from './img/gamepad.svg';
-import logo from './img/logo.svg';
 import nintendo from './img/nintendo.svg';
 import playstation from './img/playstation.svg';
 import steam from './img/steam.svg';
@@ -26,9 +24,6 @@ export const resizeImg = (imagePath, newSize) => {
   }
 };
 
-export const deletePtags = (text) => {
-  return parse(text)
-};
 
 export const getIconPlatforms = (platform) => {
   switch (platform) {
@@ -63,3 +58,5 @@ export const getStarsRating = (gameRating) => {
   }
   return stars;
 };
+
+

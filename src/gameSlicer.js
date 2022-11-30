@@ -1,14 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { newsTranding } from './api';
 import axios from 'axios';
 
 const initialState = {
   currentFetchedGames: [],
   currentFetchUrl: null,
+  bannerUrl: null,
   status: null,
   error: null,
 };
 
+//fetch games for infinite scroll
 export const fetchGames = createAsyncThunk(
   'games/fetchGames',
   async (url, { rejectWithValue, dispatch }) => {
@@ -20,9 +21,7 @@ export const fetchGames = createAsyncThunk(
           'Something went wrong with server... Try again later please.'
         );
       } else {
-        dispatch(getUrl(url));
-
-        console.log(response.data.results);
+        dispatch(getcurrentFetchUrl(url));
         return response.data.results;
       }
     } catch (error) {
@@ -30,6 +29,8 @@ export const fetchGames = createAsyncThunk(
     }
   }
 );
+
+//fetch games reload for change page(filter)
 export const reloadGames = createAsyncThunk(
   'games/reloadGames',
   async (url, { rejectWithValue, dispatch }) => {
@@ -41,9 +42,8 @@ export const reloadGames = createAsyncThunk(
           'Something went wrong with server... Try again later please.'
         );
       } else {
-        dispatch(getUrl(url));
+        dispatch(getcurrentFetchUrl(url));
 
-        console.log(response.data.results);
         return response.data.results;
       }
     } catch (error) {
@@ -56,8 +56,11 @@ const fetchSlice = createSlice({
   name: 'games',
   initialState,
   reducers: {
-    getUrl: (state, action) => {
+    getcurrentFetchUrl: (state, action) => {
       state.currentFetchUrl = action.payload;
+    },
+    getBannerUrl: (state, action) => {
+      state.bannerUrl = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -82,5 +85,6 @@ const fetchSlice = createSlice({
   },
 });
 
-export const { fetch, getUrl, reload } = fetchSlice.actions;
+export const { fetch, getcurrentFetchUrl, reload, getBannerUrl } =
+  fetchSlice.actions;
 export default fetchSlice.reducer;

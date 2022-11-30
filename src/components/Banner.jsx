@@ -1,20 +1,24 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getBannerUrl } from '../gameSlicer';
 
 const Banner = () => {
   const { currentFetchedGames, status } = useSelector((state) => state.game);
-  const getRandomBanner = (stateArray) => {
-    const randomNum = Math.floor(Math.random() * (19 - 0)) + 0;
-    const imageAddress = stateArray[randomNum].background_image;
-    return imageAddress;
+  const getRandomBanner = () => {
+    if (status === 'fulfilled') {
+      const randomNum = Math.floor(Math.random() * (18 - 1)) + 1;
+      const imageAddress = currentFetchedGames[randomNum].background_image;
+      return imageAddress;
+    } else return '';
   };
+
   return (
-    <div>
-      {status === 'fulfilled' && (
-        <StyledBanner src={getRandomBanner(currentFetchedGames)} alt={currentFetchedGames.name} />
+    <BannerWrapper>
+      {currentFetchedGames && (
+        <StyledBanner src={getRandomBanner()} alt={currentFetchedGames.name} />
       )}
-    </div>
+    </BannerWrapper>
   );
 };
 
@@ -24,6 +28,11 @@ const StyledBanner = styled.img`
   padding: 0 2rem 0 0;
   width: 50vw;
   object-fit: cover;
+`;
+const BannerWrapper = styled.div`
+  @media screen and (max-width: 1200px) {
+    display: none;
+  }
 `;
 
 export default Banner;

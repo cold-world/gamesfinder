@@ -1,114 +1,103 @@
 import React from 'react';
 import styled from 'styled-components';
-import { fetchGames, reloadGames } from '../gameSlicer';
-import { newLast30Days, bestOfTheYear } from '../api';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, Link } from 'react-router-dom';
+import { reloadGames } from '../gameSlicer';
+import {
+  newLast30Days,
+  bestOfTheYear,
+  newsTranding,
+  newNext30Days,
+  bestOfTheLastYear,
+  allTimeTop,
+  filterPlaystation5,
+  filterPlaystation4,
+  filterNintendo,
+} from '../api';
+import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-const Nav = ({ setPageNumber }) => {
-  const { currentFetchUrl } = useSelector((state) => state.game);
-  const pageSetup = (num) => {
-    currentFetchUrl.slice(0, -1) + num;
-  };
+const Nav = ({ setPageNumber, open }) => {
+  // const { currentFetchUrl } = useSelector((state) => state.game);
+  // const pageSetup = (num) => {
+  //   currentFetchUrl.slice(0, -1) + num;
+  // };
   const dispatch = useDispatch();
-  const fetchGamesHandler = () => {
+  const fetchGamesHandler = (url) => {
     setPageNumber(2);
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    switch (key) {
-      case value:
-        
-        break;
-    
-      default:
-        break;
-    }
-    dispatch(reloadGames(bestOfTheYear(1)));
+    dispatch(reloadGames(url(1)));
   };
 
   return (
-    <StyledNav>
-      <div className='logo'>
+    <StyledNav open={open}>
+      <Logo className='logo'>
         <Link to='/'>
-          <h2 onClick={fetchGamesHandler}>GamesFinder</h2>
+          <h2 onClick={() => fetchGamesHandler(newsTranding)}>GamesFinder</h2>
         </Link>
-      </div>
+      </Logo>
       <Menu>
         <ul>
           <Link to='/'>
-            <li onClick={fetchGamesHandler}>
+            <li onClick={() => fetchGamesHandler(newsTranding)}>
               <h3>Home</h3>
             </li>
           </Link>
           <li>
             <h3>New Releases</h3>
           </li>
-          <Link href='/discover/last-30-days'>
-            <li onClick={fetchGamesHandler}>
+          <Link to='/last-30-days'>
+            <li onClick={() => fetchGamesHandler(newLast30Days)}>
               <p>Last 30 days</p>
             </li>
           </Link>
-          <Link to='/'>
-            <li>
-              <p>This week</p>
+          <Link to='/next-30-days'>
+            <li onClick={() => fetchGamesHandler(newNext30Days)}>
+              <p>Next 30 days</p>
             </li>
           </Link>
-          <Link to='/'>
-            <li>
-              <p>Next week</p>
-            </li>
-          </Link>
-          <Link to='/'>
-            <li>
-              <h3>Top</h3>
-            </li>
-          </Link>
-          <Link to='/discover/best-of-the-year'>
-            <li onClick={fetchGamesHandler}>
+
+          <li>
+            <h3>Top</h3>
+          </li>
+          <Link to='/best-of-the-year'>
+            <li onClick={() => fetchGamesHandler(bestOfTheYear)}>
               <p>Best of the year</p>
             </li>
           </Link>
-          <Link to='/'>
-            <li>
-              <p>Popular in</p>
+          <Link to='/popular-in-last-year'>
+            <li onClick={() => fetchGamesHandler(bestOfTheLastYear)}>
+              <p>Popular in {new Date().getFullYear() - 1}</p>
             </li>
           </Link>
-          <Link to='/'>
-            <li>
-              <p>All time top 250</p>
-            </li>
-          </Link>
-          <Link to='/'>
-            <li>
+          <Link to='/all-games'>
+            <li onClick={() => fetchGamesHandler(allTimeTop)}>
               <h3>All games</h3>
             </li>
           </Link>
-          <Link to='/'>
-            <li>
-              <h3>Platforms</h3>
-            </li>
-          </Link>
-          <Link to='/'>
-            <li>
+          <li>
+            <h3>Platforms</h3>
+          </li>
+          {/* <Link to='/pc-games'>
+            <li onClick={() => fetchGamesHandler(filterPC)}>
               <p>PC</p>
             </li>
-          </Link>
-          <Link to='/'>
-            <li>
+          </Link> */}
+          <Link to='/playstation-4-games'>
+            <li onClick={() => fetchGamesHandler(filterPlaystation4)}>
               <p>PlayStation 4</p>
             </li>
           </Link>
-          <Link to='/'>
-            <li>
+          <Link to='/playstation-5-games'>
+            <li onClick={() => fetchGamesHandler(filterPlaystation5)}>
               <p>PlayStation 5</p>
             </li>
           </Link>
-          <Link to='/'>
-            <li>
+          {/* <Link to='/xbox-one-games'>
+            <li onClick={() => fetchGamesHandler(filterXbox)}>
               <p>Xbox One</p>
             </li>
-          </Link>
-          <Link to='/'>
-            <li>
+          </Link> */}
+          <Link to='/nintendo-switch-games'>
+            <li onClick={() => fetchGamesHandler(filterNintendo)}>
               <p>Nintendo Switch</p>
             </li>
           </Link>
@@ -126,7 +115,16 @@ const StyledNav = styled.nav`
   float: left;
   background: white;
   width: 12%;
-  padding: 2rem;
+  padding: 2rem 2rem;
+  @media screen and (max-width: 1460px) {
+    padding: 2rem 0 0 2rem;
+  }
+  @media screen and (max-width: 1200px) {
+    z-index: 1000;
+    transform: ${({ open }) => (open ? 'translateX(0)' : 'translateX(-100%)')};
+    transition: transform 0.3s ease-in-out;
+    min-width: 15rem;
+  }
   h2 {
     font-size: 2rem;
     font-family: 'Carter One', sans-serif;
@@ -135,9 +133,20 @@ const StyledNav = styled.nav`
     margin-bottom: 1.5rem;
   }
 `;
+const Logo = styled.div`
+  @media screen and (max-width: 1200px) {
+  margin-top: 5rem;
+  h2 {
+    font-size: 1.5rem;
+  }
+  }
+`;
 
 const Menu = styled.div`
   margin-top: 3rem;
+  @media screen and (max-width: 1200px) {
+    margin-top: 5rem;
+  }
 `;
 
 export default Nav;

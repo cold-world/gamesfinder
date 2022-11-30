@@ -7,7 +7,7 @@ function App() {
       <GlobalStyle />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/discover/:id' element={<Home />} />
+        <Route path='/:id' element={<Home />} />
         <Route path='/game/:id' element={<Home />} />
       </Routes>
     </div>

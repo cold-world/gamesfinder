@@ -5,6 +5,7 @@ import axios from 'axios';
 const initialState = {
   gameDetails: {},
   screenshots: [],
+  disableTitle: false,
   status: null,
   screenStatus: null,
   error: null,
@@ -12,15 +13,17 @@ const initialState = {
 
 export const fetchGameDitails = createAsyncThunk(
   'games/fetchGameDitails',
-  async (id, { rejectWithValue }) => {
+  async (id, { rejectWithValue, dispatch }) => {
+    dispatch(disableTitleWhenDetails(true))
+
     const response = await axios.get(gameDetails(id));
+
     try {
       if (response.status !== 200) {
         throw new Error(
           'Something went wrong with server... Try again later please.'
         );
       } else {
-        console.log(response.data);
         return response.data;
       }
     } catch (error) {
@@ -49,7 +52,14 @@ export const fetchGameScreenshots = createAsyncThunk(
 const detailSlice = createSlice({
   name: 'details',
   initialState,
-  reducers: {},
+  reducers: {
+    clearDetails: (state) => {
+      state.gameDetails = {};
+    },
+    disableTitleWhenDetails: (state, action) => {
+      state.disableTitle = action.payload;
+  },
+},
   extraReducers: {
     [fetchGameDitails.pending]: (state) => {
       state.status = 'pending';
@@ -77,5 +87,5 @@ const detailSlice = createSlice({
   },
 });
 
-export const { details } = detailSlice.actions;
+export const { details, clearDetails, disableTitleWhenDetails } = detailSlice.actions;
 export default detailSlice.reducer;

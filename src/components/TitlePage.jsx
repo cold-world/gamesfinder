@@ -1,19 +1,25 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-
-const TitlePage = () => {
+import styled from 'styled-components';
+const TitlePage = ({disableTitle}) => {
   const location = useLocation();
-  console.log(location.pathname);
 
   const titleHandler = () => {
     if (location.pathname === '/') {
-      return 'New and tranding';
+      return 'New and trending';
+    } else if (disableTitle) { ''
     } else {
       const str = location.pathname.split('/').pop().split('-').join(' ');
       return str[0].toUpperCase() + str.slice(1);
     }
   };
-  return <h2>{titleHandler()}</h2>;
+  return <StyledTitle>{titleHandler()}</StyledTitle>;
 };
+
+const StyledTitle = styled.h2`
+  @media screen and (max-width:560px) {
+    font-size: 3rem;
+  }
+`
 
 export default TitlePage;

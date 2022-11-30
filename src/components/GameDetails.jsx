@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { resizeImg, deletePtags } from '../utils';
+import { resizeImg } from '../utils';
 import Spinner from '../components/Spinner';
+import { clearDetails, disableTitleWhenDetails } from '../detailsSlicer';
 
 const GameDetails = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { gameDetails, status, screenshots, screenStatus } = useSelector(
+  const { gameDetails, status, screenshots, screenStatus, disableTitle } = useSelector(
     (store) => store.details
   );
   const exitDetailsHandler = (e) => {
@@ -16,6 +18,8 @@ const GameDetails = () => {
     if (element.classList.contains('wrapper')) {
       document.body.style.overflow = 'auto';
       navigate('/');
+      dispatch(clearDetails());
+      dispatch(disableTitleWhenDetails(false));
     }
   };
   return (
@@ -30,7 +34,9 @@ const GameDetails = () => {
               alt={gameDetails.name}
             />
             <h3>About</h3>
-            <p>{deletePtags(gameDetails.description)}</p>
+            {status === 'fulfilled' && (
+              <p>{gameDetails.description}</p>
+            )}
             {screenshots.map((screen) => (
               <img key={screen.id} src={resizeImg(screen.image, 1280)} />
             ))}
@@ -70,8 +76,22 @@ const StyledDetails = styled(motion.div)`
   backdrop-filter: blur(4px);
   box-shadow: inset 0 0 0 150vw rgba(0, 0, 0, 0.5);
 
+  p {
+    padding: 2rem 6rem;
+  }
+
   img {
     width: 80%;
+    padding-bottom: 3rem;
+  }
+  @media screen and (max-width:760px) {
+  h2 {
+    font-size: 2rem;
+    padding-bottom: 2rem;
+  }
+  p{
+    padding: 2rem 0rem;
+  }
   }
 `;
 

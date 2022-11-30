@@ -64,6 +64,12 @@ const StyledGame = styled(motion.div)`
   h3 {
     padding: 0 2rem 2rem 1rem;
   }
+  @media screen and (max-width:560px) {
+  h3 {
+    font-size: 1rem;
+  }
+  }
+
 `;
 const Description = styled.div`
   display: flex;
