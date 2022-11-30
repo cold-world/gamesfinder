@@ -18,7 +18,7 @@ const TitlePage = ({disableTitle}) => {
 
 const StyledTitle = styled.h2`
   @media screen and (max-width:560px) {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 `
 

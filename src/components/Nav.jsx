@@ -140,6 +140,10 @@ const Logo = styled.div`
     font-size: 1.5rem;
   }
   }
+  @media screen and (max-width: 560px) {
+    margin-top: 2rem;
+  }
+
 `;
 
 const Menu = styled.div`
@@ -147,6 +151,14 @@ const Menu = styled.div`
   @media screen and (max-width: 1200px) {
     margin-top: 5rem;
   }
+  @media screen and (max-width: 560px) {
+    margin-top: 2rem;
+    h3 {
+      font-size: 1rem;
+    }
+    overflow-y: scroll;
+  }
+
 `;
 
 export default Nav;

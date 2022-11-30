@@ -53,6 +53,10 @@ const StyledBurger = styled.button`
   @media screen and (min-width: 1200px ) {
     display: none;
   }
+  @media screen and (max-width: 560px ) {
+    left: 2rem;
+  }
+
 `;
 
 export default Burger;
