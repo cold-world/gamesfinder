@@ -13,11 +13,11 @@ const Banner = () => {
     } else return '';
   };
 
+  const src = getRandomBanner();
+
   return (
     <BannerWrapper>
-      {currentFetchedGames && (
-        <StyledBanner src={getRandomBanner()} alt={currentFetchedGames.name} />
-      )}
+      {currentFetchedGames && <StyledBanner src={src} alt={currentFetchedGames.name} />}
     </BannerWrapper>
   );
 };
